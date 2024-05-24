@@ -1,8 +1,17 @@
-<nav>
-  <ul>
-    <li><a routerLink="/products">Product List</a></li>
-    <li><a routerLink="/create-product">Create Product</a></li>
+<p-sidebar [(visible)]="sidebarVisible">
+  <h3>Sidebar</h3>
+  <ul class="list-none">
+    <li>
+      <a class="no-underline text-blue-500" routerLink="/products"
+        >Product List</a
+      >
+    </li>
+    <li>
+      <a class="no-underline text-blue-500" routerLink="/create-product"
+        >Create Product</a
+      >
+    </li>
   </ul>
-</nav>
-
+</p-sidebar>
+<p-button class="p-0 m-0" (click)="sidebarVisible = true" icon="pi pi-bars" />
 <router-outlet></router-outlet>
