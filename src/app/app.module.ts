@@ -22,11 +22,10 @@ import { DialogModule } from 'primeng/dialog';
 
 // components
 import { ProductListComponent } from './components/product-list/product-list.component';
-import { ProductCreateComponent } from './components/product-create/product-create.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
 
 @NgModule({
-  declarations: [AppComponent, ProductListComponent, ProductCreateComponent],
+  declarations: [AppComponent, ProductListComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -1,21 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PrimeIcons } from 'primeng/api';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
-  providers: [MessageService],
+  providers: [ConfirmationService, MessageService],
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
   editDialogVisible = false;
-  currentProduct: Product | null = null;
+  createDialogVisible = false;
   editForm: FormGroup;
+  createForm: FormGroup;
+  currentProduct: Product | null = null;
 
   constructor(
     private productService: ProductService,
@@ -27,7 +28,14 @@ export class ProductListComponent implements OnInit {
       name: ['', Validators.required],
       description: ['', Validators.required],
       brand: ['', Validators.required],
-      price: [0, [Validators.required, Validators.min(0)]],
+      price: ['', [Validators.required, Validators.min(0)]],
+    });
+
+    this.createForm = this.fb.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      brand: ['', Validators.required],
+      price: ['', [Validators.required, Validators.min(0)]],
     });
   }
 
@@ -42,14 +50,18 @@ export class ProductListComponent implements OnInit {
   }
 
   openEditDialog(product: Product): void {
-    this.currentProduct = { ...product };
-    this.editForm.setValue({
-      name: product.name,
-      description: product.description,
-      brand: product.brand,
-      price: product.price,
-    });
+    this.currentProduct = product;
+    this.editForm.patchValue(product);
     this.editDialogVisible = true;
+  }
+
+  cancelEdit(): void {
+    this.editDialogVisible = false;
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Cancelled',
+      detail: 'Edit cancelled',
+    });
   }
 
   updateProduct(): void {
@@ -62,19 +74,38 @@ export class ProductListComponent implements OnInit {
           severity: 'success',
           summary: 'Updated',
           detail: 'Product updated successfully',
-
         });
       });
     }
   }
 
-  cancelEdit(): void {
-    this.editDialogVisible = false;
+  openCreateDialog(): void {
+    this.createForm.reset();
+    this.createDialogVisible = true;
+  }
+
+  cancelCreate(): void {
+    this.createDialogVisible = false;
     this.messageService.add({
-      severity: 'warn',
-      summary: 'Warn',
-      detail: 'Product edition was cancelled',
+      severity: 'info',
+      summary: 'Cancelled',
+      detail: 'Creation cancelled',
     });
+  }
+
+  addProduct(): void {
+    if (this.createForm.valid) {
+      const newProduct = this.createForm.value as Product;
+      this.productService.addProduct(newProduct).subscribe(() => {
+        this.loadProducts();
+        this.createDialogVisible = false;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Created',
+          detail: 'Product added successfully',
+        });
+      });
+    }
   }
 
   confirmDelete(productId: number): void {
@@ -87,9 +118,9 @@ export class ProductListComponent implements OnInit {
       },
       reject: () => {
         this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: 'Product elimination was cancelled',
+          severity: 'info',
+          summary: 'Cancelled',
+          detail: 'Delete cancelled',
         });
       },
     });
@@ -99,8 +130,8 @@ export class ProductListComponent implements OnInit {
     this.productService.deleteProduct(productId).subscribe(() => {
       this.loadProducts();
       this.messageService.add({
-        severity: 'warn',
-        summary: 'Warn',
+        severity: 'success',
+        summary: 'Deleted',
         detail: 'Product deleted successfully',
       });
     });
