@@ -4,17 +4,25 @@
 @import '../node_modules/primeng/resources/primeng.css';
 
 
-html {
-  background-color: #ffffff;
-}
-
-html, body {
-  height: 100%;
-  padding: 0px;
-  width: 100%;
-}
 
 * {
   box-sizing: border-box;
+}
+
+html,
+body {
+  padding: 0;
   margin: 0;
+}
+
+html {
+  height: 100%;
+}
+
+html {
+  background-color: var(--surface-ground);
+}
+
+.poppins {
+  font-family: 'Poppins', 'Courier New', Courier, monospace;
 }

@@ -17,7 +17,7 @@
             <th pSortableColumn="price" class="w-2">
                 Price <p-sortIcon field="price"></p-sortIcon>
             </th>
-            <th class="w-2 text-center ">
+            <th class="w-2 text-center">
                 Actions
             </th>
         </tr>
@@ -48,46 +48,37 @@
             </span>
             <p class="mb-0">{{ message.message }}</p>
             <div class="flex align-items-center gap-2 mt-4">
-                <button
-                    pButton
-                    label="Yes"
-                    (click)="cd.accept()"
-                    class="w-8rem">
-                </button>
-                <button
-                    pButton
-                    label="No"
-                    (click)="cd.reject()"
-                    class="p-button-outlined w-8rem">
-                </button>
+                <button pButton label="Yes" (click)="cd.accept()" class="w-8rem"></button>
+                <button pButton label="No" (click)="cd.reject()" class="p-button-outlined w-8rem"></button>
             </div>
         </div>
     </ng-template>
 </p-confirmDialog>
-<p-toast></p-toast>
+
+<p-toast position="top-center" class="custom-toast" ></p-toast>
 
 <p-dialog header="Edit Product" [(visible)]="editDialogVisible" [modal]="true" [closable]="false">
     <form [formGroup]="editForm" (ngSubmit)="updateProduct()">
         <div class="p-fluid">
-            <div class="p-field">
+            <div class="mb-3">
                 <label for="name">Name</label>
-                <input id="name" type="text" pInputText formControlName="name" />
+                <input id="name" class="mt-2" type="text" pInputText formControlName="name" />
             </div>
-            <div class="p-field">
+            <div class="p-field pb-3">
                 <label for="description">Description</label>
-                <input id="description" type="text" pInputText formControlName="description" />
+                <input id="description" class="mt-2" type="text" pInputText formControlName="description" />
             </div>
-            <div class="p-field">
+            <div class="p-field pb-3">
                 <label for="brand">Brand</label>
-                <input id="brand" type="text" pInputText formControlName="brand" />
+                <input id="brand" class="mt-2" type="text" pInputText formControlName="brand" />
             </div>
-            <div class="p-field">
+            <div class="p-field pb-3">
                 <label for="price">Price</label>
-                <input id="price" type="number" pInputText formControlName="price" />
+                <input id="price" class="mt-2" type="number" pInputText formControlName="price" />
             </div>
         </div>
-        <div class="p-dialog-footer">
-            <button type="button" pButton label="Cancel" icon="pi pi-times" (click)="editDialogVisible = false" class="p-button-secondary"></button>
+        <div class="p-dialog-footer flex justify-content-between p-2">
+            <button type="button" pButton label="Cancel" icon="pi pi-times" severity="danger" class="p-button-secondary" (click)="cancelEdit()"></button>
             <button type="submit" pButton label="Save" icon="pi pi-check" [disabled]="editForm.invalid"></button>
         </div>
     </form>

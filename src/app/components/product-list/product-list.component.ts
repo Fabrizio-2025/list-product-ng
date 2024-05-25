@@ -3,18 +3,19 @@ import { ProductService } from '../../services/product.service';
 import { Product } from '../../models/product.model';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PrimeIcons } from 'primeng/api';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
-  providers: [MessageService, ConfirmationService],
+  providers: [MessageService],
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
-  editDialogVisible: boolean = false;
-  editForm: FormGroup;
+  editDialogVisible = false;
   currentProduct: Product | null = null;
+  editForm: FormGroup;
 
   constructor(
     private productService: ProductService,
@@ -41,8 +42,13 @@ export class ProductListComponent implements OnInit {
   }
 
   openEditDialog(product: Product): void {
-    this.currentProduct = product;
-    this.editForm.patchValue(product);
+    this.currentProduct = { ...product };
+    this.editForm.setValue({
+      name: product.name,
+      description: product.description,
+      brand: product.brand,
+      price: product.price,
+    });
     this.editDialogVisible = true;
   }
 
@@ -56,9 +62,19 @@ export class ProductListComponent implements OnInit {
           severity: 'success',
           summary: 'Updated',
           detail: 'Product updated successfully',
+
         });
       });
     }
+  }
+
+  cancelEdit(): void {
+    this.editDialogVisible = false;
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Warn',
+      detail: 'Product edition was cancelled',
+    });
   }
 
   confirmDelete(productId: number): void {
@@ -71,8 +87,8 @@ export class ProductListComponent implements OnInit {
       },
       reject: () => {
         this.messageService.add({
-          severity: 'info',
-          summary: 'Cancelled',
+          severity: 'error',
+          summary: 'Error',
           detail: 'You have cancelled',
         });
       },
@@ -83,8 +99,8 @@ export class ProductListComponent implements OnInit {
     this.productService.deleteProduct(productId).subscribe(() => {
       this.loadProducts();
       this.messageService.add({
-        severity: 'success',
-        summary: 'Deleted',
+        severity: 'warn',
+        summary: 'Warn',
         detail: 'Product deleted successfully',
       });
     });
