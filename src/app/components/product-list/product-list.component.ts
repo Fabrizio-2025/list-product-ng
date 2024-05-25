@@ -89,7 +89,7 @@ export class ProductListComponent implements OnInit {
         this.messageService.add({
           severity: 'error',
           summary: 'Error',
-          detail: 'You have cancelled',
+          detail: 'Product elimination was cancelled',
         });
       },
     });
