@@ -1,0 +1,34 @@
+<div class="p-2 m-2 w-11">
+  <h2 class="p-2 m-2">Products for Sale {{ saleId }}</h2>
+  <div class="p-2 p-inputgroup w-11">
+    <input pInputText type="number" [(ngModel)]="saleIdInput" placeholder="Enter Sale ID">
+    <button pButton type="button" label="Load Products" (click)="loadProducts()"></button>
+  </div>
+</div>
+
+<p-table class="w-11 p-2  " *ngIf="saleId !== null" [value]="products" [tableStyle]="{'min-width': '60rem'}">
+  <ng-template pTemplate="header">
+    <tr class="p-2">
+      <th pSortableColumn="id" class="w-1 p-0 pl-5">Id <p-sortIcon field="id"></p-sortIcon></th>
+      <th pSortableColumn="name" class="w-2">Name <p-sortIcon field="name"></p-sortIcon></th>
+      <th class="w-3">Description</th>
+      <th pSortableColumn="brand" class="w-1">Brand <p-sortIcon field="brand"></p-sortIcon></th>
+      <th pSortableColumn="price" class="w-2">Price <p-sortIcon field="price"></p-sortIcon></th>
+      <th pSortableColumn="quantity" class="w-2">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-product>
+    <tr>
+      <td>{{ product.id }}</td>
+      <td>{{ product.name }}</td>
+      <td>{{ product.description }}</td>
+      <td>{{ product.brand }}</td>
+      <td>{{ product.price | currency }}</td>
+      <td>{{ product.quantity }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<div *ngIf="totalPrice !== null" class="p-2 m-2">
+  <h3>Total Price: {{ totalPrice | currency }}</h3>
+</div>

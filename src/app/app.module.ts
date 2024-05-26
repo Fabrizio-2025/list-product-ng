@@ -25,9 +25,10 @@ import { ChartModule } from 'primeng/chart';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ProductBrandChartComponent } from './components/product-brand-chart/product-brand-chart.component';
+import { ProductSaleListComponent } from './components/product-sale-list/product-sale-list.component';
 
 @NgModule({
-  declarations: [AppComponent, ProductListComponent , ProductBrandChartComponent],
+  declarations: [AppComponent, ProductListComponent , ProductBrandChartComponent, ProductSaleListComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
