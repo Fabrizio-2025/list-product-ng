@@ -19,13 +19,15 @@ import { ToastModule } from 'primeng/toast';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
+import { ChartModule } from 'primeng/chart';
 
 // components
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { ProductBrandChartComponent } from './components/product-brand-chart/product-brand-chart.component';
 
 @NgModule({
-  declarations: [AppComponent, ProductListComponent],
+  declarations: [AppComponent, ProductListComponent , ProductBrandChartComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -46,6 +48,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
     DropdownModule,
     InputTextModule,
     DialogModule,
+    ChartModule,
   ],
   providers: [
     ConfirmationService,
