@@ -58,7 +58,7 @@ export class ProductListComponent implements OnInit {
   cancelEdit(): void {
     this.editDialogVisible = false;
     this.messageService.add({
-      severity: 'info',
+      severity: 'warn',
       summary: 'Cancelled',
       detail: 'Edit cancelled',
     });
@@ -87,7 +87,7 @@ export class ProductListComponent implements OnInit {
   cancelCreate(): void {
     this.createDialogVisible = false;
     this.messageService.add({
-      severity: 'info',
+      severity: 'warn',
       summary: 'Cancelled',
       detail: 'Creation cancelled',
     });
@@ -118,7 +118,7 @@ export class ProductListComponent implements OnInit {
       },
       reject: () => {
         this.messageService.add({
-          severity: 'info',
+          severity: 'error',
           summary: 'Cancelled',
           detail: 'Delete cancelled',
         });

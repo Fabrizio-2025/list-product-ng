@@ -4,7 +4,7 @@
     <button pButton [outlined]="true" severity="success" (click)="openCreateDialog()">Add Product</button>
   </div>
 </div>
-<p-table [value]="products" [tableStyle]="{ 'min-width': '60rem' }">
+<p-table [value]="products" [rowsPerPageOptions]="[5, 10, 20]" [rows]="5" [paginator]="true" [tableStyle]="{ 'min-width': '60rem' }">
   <ng-template pTemplate="header" class="flex justify-content-between">
     <tr>
       <th pSortableColumn="id" class="w-1">
