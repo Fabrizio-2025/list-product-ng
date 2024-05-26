@@ -19,7 +19,7 @@
   </ng-template>
   <ng-template pTemplate="body" let-product>
     <tr>
-      <td>{{ product.id }}</td>
+      <td class=" p-0 pl-5" >{{ product.id }}</td>
       <td>{{ product.name }}</td>
       <td>{{ product.description }}</td>
       <td>{{ product.brand }}</td>
@@ -30,5 +30,5 @@
 </p-table>
 
 <div *ngIf="totalPrice !== null" class="p-2 m-2">
-  <h3>Total Price: {{ totalPrice | currency }}</h3>
+  <h3 class=" p-0 pl-2" >Total Price: {{ totalPrice | currency }}</h3>
 </div>
