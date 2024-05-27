@@ -11,11 +11,13 @@ export class ProductBrandChartComponent implements OnInit {
   products: Product[] = [];
   productsByBrand: { [key: string]: number } = {};
   chartData: any;
+  top4Products: Product[] = [];
 
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.loadProducts();
+    this.loadTop4Products();
   }
 
   loadProducts(): void {
@@ -70,5 +72,13 @@ export class ProductBrandChartComponent implements OnInit {
       '#9966FF',
     ];
     return colors.slice(0, count);
+  }
+
+  loadTop4Products(): void {
+    this.productService
+      .getTop4MostPurchasedProducts()
+      .subscribe((data: Product[]) => {
+        this.top4Products = data;
+      });
   }
 }
