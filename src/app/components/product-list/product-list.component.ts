@@ -12,11 +12,21 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 })
 export class ProductListComponent implements OnInit {
   products: Product[] = [];
+  filteredProducts: Product[] = [];
   editDialogVisible = false;
   createDialogVisible = false;
   editForm: FormGroup;
   createForm: FormGroup;
   currentProduct: Product | null = null;
+  searchValue: string = '';
+  selectedSearchAttribute = { label: 'ID', value: 'id' };
+  searchAttributes = [
+    { label: 'ID', value: 'id' },
+    { label: 'Name', value: 'name' },
+    { label: 'Description', value: 'description' },
+    { label: 'Brand', value: 'brand' },
+    { label: 'Price', value: 'price' },
+  ];
 
   constructor(
     private productService: ProductService,
@@ -28,14 +38,20 @@ export class ProductListComponent implements OnInit {
       name: ['', Validators.required],
       description: ['', Validators.required],
       brand: ['', Validators.required],
-      price: ['', [Validators.required, Validators.min(0)]],
+      price: [
+        '',
+        [Validators.required, Validators.min(0), Validators.max(1000)],
+      ],
     });
 
     this.createForm = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       brand: ['', Validators.required],
-      price: ['', [Validators.required, Validators.min(0)]],
+      price: [
+        '',
+        [Validators.required, Validators.min(0), Validators.max(1000)],
+      ],
     });
   }
 
@@ -46,6 +62,7 @@ export class ProductListComponent implements OnInit {
   loadProducts(): void {
     this.productService.getProducts().subscribe((data: Product[]) => {
       this.products = data;
+      this.filteredProducts = data; // Initialize filteredProducts with all products
     });
   }
 
@@ -67,32 +84,15 @@ export class ProductListComponent implements OnInit {
   updateProduct(): void {
     if (this.editForm.valid && this.currentProduct) {
       const updatedProduct = { ...this.currentProduct, ...this.editForm.value };
-      this.productService.updateProduct(updatedProduct).subscribe(
-        () => {
-          this.loadProducts();
-          this.editDialogVisible = false;
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Updated',
-            detail: 'Product updated successfully',
-          });
-        },
-        (error) => {
-          if (error.status === 400) {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Duplicate product details',
-            });
-          } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Failed to update product',
-            });
-          }
-        }
-      );
+      this.productService.updateProduct(updatedProduct).subscribe(() => {
+        this.loadProducts();
+        this.editDialogVisible = false;
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Updated',
+          detail: 'Product updated successfully',
+        });
+      });
     }
   }
 
@@ -128,13 +128,7 @@ export class ProductListComponent implements OnInit {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: 'Duplicate product details',
-            });
-          } else {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: 'Failed to add product',
+              detail: 'Product data is duplicated',
             });
           }
         }
@@ -168,6 +162,16 @@ export class ProductListComponent implements OnInit {
         summary: 'Deleted',
         detail: 'Product deleted successfully',
       });
+    });
+  }
+
+  filterProducts(): void {
+    const searchValueLower = this.searchValue.toLowerCase();
+    this.filteredProducts = this.products.filter((product) => {
+      return product[this.selectedSearchAttribute.value]
+        ?.toString()
+        .toLowerCase()
+        .includes(searchValueLower);
     });
   }
 }

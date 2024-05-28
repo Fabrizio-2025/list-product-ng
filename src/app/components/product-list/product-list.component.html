@@ -1,10 +1,16 @@
+<h2 class="p-2 m-2">Product List</h2>
 <div class="w-full h-4rem flex justify-content-between align-items-center">
-  <h2 class="p-2 m-2">Product List</h2>
-  <div class="p-2">
+  <div class="p-2 w-3">
     <button pButton [outlined]="true" severity="success" (click)="openCreateDialog()">Add Product</button>
   </div>
+  <div class="w-4 flex justify-content-evenly align-items-center" >
+    <label for="searchSelect">Buscar por: </label>
+    <p-dropdown [options]="searchAttributes" [(ngModel)]="selectedSearchAttribute" optionLabel="label" placeholder="Select an attribute"></p-dropdown>
+    <input pInputText type="text" [(ngModel)]="searchValue" (input)="filterProducts()" />
+  </div>
 </div>
-<p-table [value]="products" [rowsPerPageOptions]="[5, 10, 20]" [rows]="5" [paginator]="true" [tableStyle]="{ 'min-width': '60rem' }">
+
+<p-table [value]="filteredProducts" [rowsPerPageOptions]="[5, 10, 20]" [rows]="5" [paginator]="true" [tableStyle]="{ 'min-width': '60rem' }">
   <ng-template pTemplate="header" class="flex justify-content-between">
     <tr>
       <th pSortableColumn="id" class="w-1">
