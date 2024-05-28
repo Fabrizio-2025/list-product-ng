@@ -67,15 +67,32 @@ export class ProductListComponent implements OnInit {
   updateProduct(): void {
     if (this.editForm.valid && this.currentProduct) {
       const updatedProduct = { ...this.currentProduct, ...this.editForm.value };
-      this.productService.updateProduct(updatedProduct).subscribe(() => {
-        this.loadProducts();
-        this.editDialogVisible = false;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Updated',
-          detail: 'Product updated successfully',
-        });
-      });
+      this.productService.updateProduct(updatedProduct).subscribe(
+        () => {
+          this.loadProducts();
+          this.editDialogVisible = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Updated',
+            detail: 'Product updated successfully',
+          });
+        },
+        (error) => {
+          if (error.status === 400) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Duplicate product details',
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Failed to update product',
+            });
+          }
+        }
+      );
     }
   }
 
@@ -96,15 +113,32 @@ export class ProductListComponent implements OnInit {
   addProduct(): void {
     if (this.createForm.valid) {
       const newProduct = this.createForm.value as Product;
-      this.productService.addProduct(newProduct).subscribe(() => {
-        this.loadProducts();
-        this.createDialogVisible = false;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Created',
-          detail: 'Product added successfully',
-        });
-      });
+      this.productService.addProduct(newProduct).subscribe(
+        () => {
+          this.loadProducts();
+          this.createDialogVisible = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Created',
+            detail: 'Product added successfully',
+          });
+        },
+        (error) => {
+          if (error.status === 400) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Duplicate product details',
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Failed to add product',
+            });
+          }
+        }
+      );
     }
   }
 
