@@ -84,15 +84,32 @@ export class ProductListComponent implements OnInit {
   updateProduct(): void {
     if (this.editForm.valid && this.currentProduct) {
       const updatedProduct = { ...this.currentProduct, ...this.editForm.value };
-      this.productService.updateProduct(updatedProduct).subscribe(() => {
-        this.loadProducts();
-        this.editDialogVisible = false;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Updated',
-          detail: 'Product updated successfully',
-        });
-      });
+      this.productService.updateProduct(updatedProduct).subscribe(
+        () => {
+          this.loadProducts();
+          this.editDialogVisible = false;
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Updated',
+            detail: 'Product updated successfully',
+          });
+        },
+        (error) => {
+          if (error.status === 400) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Duplicate product details',
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Failed to update product',
+            });
+          }
+        }
+      );
     }
   }
 
@@ -128,7 +145,13 @@ export class ProductListComponent implements OnInit {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: 'Product data is duplicated',
+              detail: 'Check product details',
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Failed to add product',
             });
           }
         }

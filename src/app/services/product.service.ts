@@ -28,6 +28,8 @@ export class ProductService {
   }
 
   getTop4MostPurchasedProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/top4-most-purchased`);
+    return this.http.get<Product[]>(
+      `${this.apiUrl}/top4-most-purchased-with-quantity`
+    );
   }
 }

@@ -12,6 +12,8 @@ export class ProductBrandChartComponent implements OnInit {
   productsByBrand: { [key: string]: number } = {};
   chartData: any;
   top4Products: Product[] = [];
+  barChartData: any;
+  barChartOptions: any;
 
   constructor(private productService: ProductService) {}
 
@@ -79,6 +81,52 @@ export class ProductBrandChartComponent implements OnInit {
       .getTop4MostPurchasedProducts()
       .subscribe((data: Product[]) => {
         this.top4Products = data;
+        this.prepareBarChartData();
       });
+  }
+
+  prepareBarChartData(): void {
+    const productNames = this.top4Products.map((product) => product.name);
+    const productQuantities = this.top4Products.map(
+      (product) => product['totalQuantity']
+    );
+
+    this.barChartData = {
+      labels: productNames,
+      datasets: [
+        {
+          label: 'Top 4 Most Purchased Products',
+          backgroundColor: '#42A5F5',
+          borderColor: '#1E88E5',
+          data: productQuantities,
+        },
+      ],
+    };
+
+    this.barChartOptions = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          beginAtZero: true,
+        },
+        y: {
+          beginAtZero: true,
+        },
+      },
+      plugins: {
+        legend: {
+          display: true,
+          position: 'top',
+        },
+        tooltip: {
+          callbacks: {
+            label: function (tooltipItem: any) {
+              return tooltipItem.label + ': ' + tooltipItem.raw;
+            },
+          },
+        },
+      },
+    };
   }
 }

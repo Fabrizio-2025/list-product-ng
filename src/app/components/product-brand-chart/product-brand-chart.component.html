@@ -1,14 +1,21 @@
 <h2 class="p-2 m-2">Products by Brand</h2>
-<div class="w-12 h-20rem flex justify-content-center align-items-center">
+<div class="w-12 h-20rem flex justify-content-center align-items-center mb-6">
   <div class="flex justify-content-center card w-7 h-full">
     <p-chart type="doughnut" [data]="chartData"></p-chart>
   </div>
-  <div class="card w-5 h-full p-2">
+  <div class="card w-5 h-full p-2 flex justify-content-center align-items-center">
     <h3>Top 4 Most Purchased Products</h3>
     <ul>
-      <li *ngFor="let product of top4Products">
+      <li class="list-decimal" *ngFor="let product of top4Products">
         {{ product.name }}
       </li>
     </ul>
+  </div>
+</div>
+
+<h2 class=" m-0 ml-2">Top 4 Most Purchased Products (Bar Chart)</h2>
+<div class=" m-0 w-12 h-23rem flex justify-content-center align-items-center align-content-center">
+  <div class="flex justify-content-center card w-10 h-full">
+    <p-chart class="h-full w-full" height="100% " width="90%" type="bar" [data]="barChartData" [options]="barChartOptions"></p-chart>
   </div>
 </div>
