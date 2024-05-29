@@ -1,7 +1,7 @@
 <div class="p-2 m-2 w-11">
   <h2 class="p-2 m-2">Products for Sale {{ saleId }}</h2>
   <div class="p-2 p-inputgroup w-11">
-    <input pInputText type="number" [(ngModel)]="saleIdInput" placeholder="Enter Sale ID">
+    <input pInputText type="number" min="1" [(ngModel)]="saleIdInput" placeholder="Enter Sale ID">
     <button pButton type="button" label="Load Products" (click)="loadProducts()"></button>
   </div>
 </div>
