@@ -26,9 +26,10 @@ import { ProductListComponent } from './components/product-list/product-list.com
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ProductBrandChartComponent } from './components/product-brand-chart/product-brand-chart.component';
 import { ProductSaleListComponent } from './components/product-sale-list/product-sale-list.component';
+import { SaleDetailsAddComponent } from './components/sale-details-add/sale-details-add.component';
 
 @NgModule({
-  declarations: [AppComponent, ProductListComponent , ProductBrandChartComponent, ProductSaleListComponent],
+  declarations: [AppComponent, ProductListComponent , ProductBrandChartComponent, ProductSaleListComponent, SaleDetailsAddComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

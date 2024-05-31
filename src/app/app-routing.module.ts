@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProductListComponent } from './components/product-list/product-list.component';
 import { ProductBrandChartComponent } from './components/product-brand-chart/product-brand-chart.component';
 import { ProductSaleListComponent } from './components/product-sale-list/product-sale-list.component';
+import { SaleDetailsAddComponent } from './components/sale-details-add/sale-details-add.component';
 
 
 const routes: Routes = [
@@ -10,6 +11,7 @@ const routes: Routes = [
   { path: 'products', component: ProductListComponent },
   { path: 'products-by-brand', component: ProductBrandChartComponent },
   { path: 'products-by-sale', component: ProductSaleListComponent },
+  { path: 'add-sale-detail', component: SaleDetailsAddComponent },
   { path: '**', redirectTo: '/products' },
 ];
 

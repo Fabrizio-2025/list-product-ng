@@ -1,0 +1,18 @@
+<h2>Add Sale Detail</h2>
+<form [formGroup]="saleDetailForm" (ngSubmit)="addSaleDetail()">
+  <div class="p-field">
+    <label for="saleId">Sale ID</label>
+    <input id="saleId" type="number" pInputText formControlName="saleId" />
+  </div>
+  <div class="p-field">
+    <label for="productId">Product ID</label>
+    <input id="productId" type="number" pInputText formControlName="productId" />
+  </div>
+  <div class="p-field">
+    <label for="quantity">Quantity</label>
+    <input id="quantity" type="number" pInputText formControlName="quantity" />
+  </div>
+  <div class="p-field">
+    <button type="submit" pButton label="Save" [disabled]="saleDetailForm.invalid"></button>
+  </div>
+</form>
