@@ -1,18 +1,19 @@
-<h2>Add Sale Detail</h2>
-<form [formGroup]="saleDetailForm" (ngSubmit)="addSaleDetail()">
-  <div class="p-field">
-    <label for="saleId">Sale ID</label>
-    <input id="saleId" type="number" pInputText formControlName="saleId" />
+<h2 class="m-0 ml-2 mt-2" >Add Sale Detail</h2>
+<form class="m-0 ml-2 mt-2 w-3 h-16rem flex flex-column justify-content-center" [formGroup]="saleDetailForm" (ngSubmit)="addSaleDetail()">
+  <div class="p-field m-2 flex justify-content-between">
+    <label class="p-2" for="saleId">Sale ID</label>
+    <input id="saleId" type="number" pInputText formControlName="saleId" min="0" />
   </div>
-  <div class="p-field">
-    <label for="productId">Product ID</label>
-    <input id="productId" type="number" pInputText formControlName="productId" />
+  <div class="p-field m-2 flex justify-content-between">
+    <label class="p-2" for="productId">Product ID</label>
+    <input id="productId" type="number" pInputText formControlName="productId" min="0" />
   </div>
-  <div class="p-field">
-    <label for="quantity">Quantity</label>
-    <input id="quantity" type="number" pInputText formControlName="quantity" />
+  <div class="p-field m-2 flex justify-content-between">
+    <label class="p-2" for="quantity">Quantity</label>
+    <input id="quantity" type="number" pInputText formControlName="quantity" min="0"/>
   </div>
-  <div class="p-field">
+  <div class="p-field mr-3 flex justify-content-end">
     <button type="submit" pButton label="Save" [disabled]="saleDetailForm.invalid"></button>
   </div>
 </form>
+<p-toast></p-toast>
