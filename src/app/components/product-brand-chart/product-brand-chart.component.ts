@@ -59,21 +59,20 @@ export class ProductBrandChartComponent implements OnInit {
   }
 
   getChartColors(count: number): string[] {
-    const colors = [
-      '#FF6384',
-      '#36A2EB',
-      '#FFCE56',
-      '#FF9F40',
-      '#4BC0C0',
-      '#9966FF',
-      '#FF6384',
-      '#36A2EB',
-      '#FFCE56',
-      '#FF9F40',
-      '#4BC0C0',
-      '#9966FF',
-    ];
-    return colors.slice(0, count);
+    const colors = [];
+    for (let i = 0; i < count; i++) {
+      colors.push(this.getRandomColor());
+    }
+    return colors;
+  }
+
+  getRandomColor(): string {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
   }
 
   loadTop4Products(): void {
@@ -96,8 +95,8 @@ export class ProductBrandChartComponent implements OnInit {
       datasets: [
         {
           label: 'Top 4 Most Purchased Products',
-          backgroundColor: '#42A5F5',
-          borderColor: '#1E88E5',
+          backgroundColor: this.getChartColors(productNames.length),
+          borderColor: this.getChartColors(productNames.length),
           data: productQuantities,
         },
       ],

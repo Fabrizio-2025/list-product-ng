@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { SaleService } from '../../services/sale.service';
+import { SaleDetailService } from '../../services/sale-detail.service';
 import { Product } from '../../models/product.model';
 
 @Component({
@@ -13,17 +13,17 @@ export class ProductSaleListComponent {
   products: Product[] = [];
   totalPrice: number | null = null;
 
-  constructor(private saleService: SaleService) {}
+  constructor(private saleDetailService: SaleDetailService) {}
 
   loadProducts(): void {
     if (this.saleIdInput !== null) {
       this.saleId = this.saleIdInput;
-      this.saleService
+      this.saleDetailService
         .getProductsBySaleId(this.saleId)
         .subscribe((data: Product[]) => {
           this.products = data;
         });
-      this.saleService
+      this.saleDetailService
         .getTotalPriceBySaleId(this.saleId)
         .subscribe((price: number) => {
           this.totalPrice = price;

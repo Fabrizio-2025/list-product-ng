@@ -1,45 +1,100 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SaleDetailService } from '../../services/sale-detail.service';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+import { SaleService } from '../../services/sale.service';
 import { MessageService } from 'primeng/api';
+import { ProductService } from '../../services/product.service';
+import { Product } from '../../models/product.model';
+import { SaleWithDetails } from '../../models/sale-with-details.model';
 
 @Component({
   selector: 'app-sale-details-add',
   templateUrl: './sale-details-add.component.html',
-  styleUrl: './sale-details-add.component.css',
+  styleUrls: ['./sale-details-add.component.css'],
+  providers: [MessageService],
 })
-export class SaleDetailsAddComponent {
-  saleDetailForm: FormGroup;
+export class SaleDetailsAddComponent implements OnInit {
+  saleForm: FormGroup;
+  products: Product[] = [];
 
   constructor(
     private fb: FormBuilder,
-    private saleDetailService: SaleDetailService,
-    private messageService: MessageService
+    private saleService: SaleService,
+    private messageService: MessageService,
+    private productService: ProductService
   ) {
-    this.saleDetailForm = this.fb.group({
-      saleId: ['', Validators.required],
-      productId: ['', Validators.required],
-      quantity: ['', [Validators.required, Validators.min(1)]],
+    this.saleForm = this.fb.group({
+      date: ['', Validators.required],
+      saleDetails: this.fb.array([]),
     });
+    this.addSaleDetail();
+  }
+
+  ngOnInit(): void {
+    this.loadProducts();
+  }
+
+  get saleDetails(): FormArray {
+    return this.saleForm.get('saleDetails') as FormArray;
   }
 
   addSaleDetail(): void {
-    if (this.saleDetailForm.valid) {
-      this.saleDetailService.addSaleDetail(this.saleDetailForm.value).subscribe(
+    const saleDetailGroup = this.fb.group({
+      productId: ['', Validators.required],
+      quantity: ['', [Validators.required, Validators.min(1)]],
+    });
+    this.saleDetails.push(saleDetailGroup);
+  }
+
+  removeSaleDetail(index: number): void {
+    this.saleDetails.removeAt(index);
+  }
+
+  loadProducts(): void {
+    this.productService.getProducts().subscribe(
+      (products) => {
+        this.products = products;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to load products',
+        });
+      }
+    );
+  }
+
+  submitSale(): void {
+    if (this.saleForm.valid) {
+      const saleData: SaleWithDetails = this.saleForm.value;
+      this.saleService.createSaleWithDetails(saleData).subscribe(
         (response) => {
           this.messageService.add({
             severity: 'success',
-            summary: 'Success',
-            detail: 'Sale detail added successfully',
+            summary: 'Created',
+            detail: 'Sale created successfully',
           });
-          this.saleDetailForm.reset();
+          this.saleForm.reset();
+          while (this.saleDetails.length) {
+            this.saleDetails.removeAt(0);
+          }
+          this.addSaleDetail(); // Ensure at least one sale detail row is present
         },
         (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: 'Failed to add sale detail',
-          });
+          if (error.status === 400) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: error.error.error || 'Check sale details',
+            });
+          } else {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Failed to create sale',
+            });
+            console.log(saleData);
+          }
         }
       );
     }

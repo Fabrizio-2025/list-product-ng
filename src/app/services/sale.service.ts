@@ -1,22 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Product } from '../models/product.model';
+import { SaleWithDetails } from '../models/sale-with-details.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SaleService {
-  private apiUrl = 'http://localhost:3000/sale-details';
+  private apiUrl = 'http://localhost:3000/sales';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
-  getProductsBySaleId(saleId: number): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.apiUrl}/sale/${saleId}`);
+  createSaleWithDetails(saleData: SaleWithDetails): Observable<SaleWithDetails> {
+    return this.http.post<SaleWithDetails>(`${this.apiUrl}/create-with-details`,saleData);
   }
-
-  getTotalPriceBySaleId(saleId: number): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/sale/${saleId}/total-price`);
-  }
-  
 }

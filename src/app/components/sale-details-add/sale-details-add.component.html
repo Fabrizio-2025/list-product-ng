@@ -1,19 +1,28 @@
-<h2 class="m-0 ml-2 mt-2" >Add Sale Detail</h2>
-<form class="m-0 ml-2 mt-2 w-3 h-16rem flex flex-column justify-content-center" [formGroup]="saleDetailForm" (ngSubmit)="addSaleDetail()">
-  <div class="p-field m-2 flex justify-content-between">
-    <label class="p-2" for="saleId">Sale ID</label>
-    <input id="saleId" type="number" pInputText formControlName="saleId" min="0" />
+<h2 class="p-2 m-2 w-2 ">Add Sale With Products</h2>
+<form [formGroup]="saleForm" (ngSubmit)="submitSale()">
+  <div class="p-field p-2 w-3 m-2 flex align-items-center justify-content-evenly border-2 shadow-4 m-2 border-200 border-round ">
+    <label for="date">Date</label>
+    <input id="date" type="date" pInputText formControlName="date" class="w-9" />
   </div>
-  <div class="p-field m-2 flex justify-content-between">
-    <label class="p-2" for="productId">Product ID</label>
-    <input id="productId" type="number" pInputText formControlName="productId" min="0" />
+  <div class="w-5 border-2 shadow-4 m-2 border-200 border-round " formArrayName="saleDetails"
+    *ngFor="let saleDetail of saleDetails.controls; let i = index">
+    <div [formGroupName]="i" class="p-field p-2 m-2 flex">
+      <div class="flex  w-8 justify-content-evenly align-items-center">
+        <label class="w-2" for="product">Product</label>
+        <p-dropdown id="product" [options]="products" optionLabel="name" optionValue="id" formControlName="productId" placeholder="Select a Product"
+          styleClass="w-23rem" />
+      </div>
+      <div class="w-4 flex align-items-center justify-content-evenly">
+        <label for="quantity">Quantity</label>
+        <input id="quantity" placeholder="0" type="number" class="w-5" pInputText formControlName="quantity" min="1" />
+        <button type="button" pButton icon="pi pi-minus" severity="danger" (click)="removeSaleDetail(i)"
+          *ngIf="saleDetails.length > 1"></button>
+      </div>
+    </div>
   </div>
-  <div class="p-field m-2 flex justify-content-between">
-    <label class="p-2" for="quantity">Quantity</label>
-    <input id="quantity" type="number" pInputText formControlName="quantity" min="0"/>
-  </div>
-  <div class="p-field mr-3 flex justify-content-end">
-    <button type="submit" pButton label="Save" [disabled]="saleDetailForm.invalid"></button>
+  <div class="w-5 m-2 h-4rem flex align-items-center justify-content-evenly" >
+    <button type="button" pButton icon="pi pi-plus" label="Add Another Product" (click)="addSaleDetail()"></button>
+    <button type="submit" pButton severity="success" label="Submit" [disabled]="saleForm.invalid"></button>
   </div>
 </form>
 <p-toast></p-toast>
