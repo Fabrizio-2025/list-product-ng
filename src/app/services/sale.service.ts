@@ -9,9 +9,18 @@ import { SaleWithDetails } from '../models/sale-with-details.model';
 export class SaleService {
   private apiUrl = 'http://localhost:3000/sales';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  createSaleWithDetails(saleData: SaleWithDetails): Observable<SaleWithDetails> {
-    return this.http.post<SaleWithDetails>(`${this.apiUrl}/create-with-details`,saleData);
+  createSaleWithDetails(
+    saleData: SaleWithDetails
+  ): Observable<SaleWithDetails> {
+    return this.http.post<SaleWithDetails>(
+      `${this.apiUrl}/create-with-details`,
+      saleData
+    );
+  }
+
+  getSaleCount(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/count`);
   }
 }

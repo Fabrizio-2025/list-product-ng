@@ -1,13 +1,13 @@
-<h2 class="p-2 m-2 w-2 ">Add Sale With Products</h2>
+<h2 class="p-2 m-2 w-3">Add Sale With Products <span *ngIf="nextSaleNumber">(#{{ nextSaleNumber }})</span></h2>
 <form [formGroup]="saleForm" (ngSubmit)="submitSale()">
   <div class="p-field p-2 w-3 m-2 flex align-items-center justify-content-evenly border-2 shadow-4 m-2 border-200 border-round ">
     <label for="date">Date</label>
     <input id="date" type="date" pInputText formControlName="date" class="w-9" />
   </div>
-  <div class="w-5 border-2 shadow-4 m-2 border-200 border-round " formArrayName="saleDetails"
+  <div class="w-5 border-2 shadow-4 m-2 border-200 border-round" formArrayName="saleDetails"
     *ngFor="let saleDetail of saleDetails.controls; let i = index">
     <div [formGroupName]="i" class="p-field p-2 m-2 flex">
-      <div class="flex  w-8 justify-content-evenly align-items-center">
+      <div class="flex w-8 justify-content-evenly align-items-center">
         <label class="w-2" for="product">Product</label>
         <p-dropdown id="product" [options]="products" optionLabel="name" optionValue="id" formControlName="productId" placeholder="Select a Product"
           styleClass="w-23rem" />
@@ -20,7 +20,7 @@
       </div>
     </div>
   </div>
-  <div class="w-5 m-2 h-4rem flex align-items-center justify-content-evenly" >
+  <div class="w-5 m-2 h-4rem flex align-items-center justify-content-evenly">
     <button type="button" pButton icon="pi pi-plus" label="Add Another Product" (click)="addSaleDetail()"></button>
     <button type="submit" pButton severity="success" label="Submit" [disabled]="saleForm.invalid"></button>
   </div>

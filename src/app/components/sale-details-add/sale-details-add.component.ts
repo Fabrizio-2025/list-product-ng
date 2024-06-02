@@ -15,6 +15,7 @@ import { SaleWithDetails } from '../../models/sale-with-details.model';
 export class SaleDetailsAddComponent implements OnInit {
   saleForm: FormGroup;
   products: Product[] = [];
+  nextSaleNumber: number | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -31,6 +32,7 @@ export class SaleDetailsAddComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProducts();
+    this.loadNextSaleNumber();
   }
 
   get saleDetails(): FormArray {
@@ -64,6 +66,21 @@ export class SaleDetailsAddComponent implements OnInit {
     );
   }
 
+  loadNextSaleNumber(): void {
+    this.saleService.getSaleCount().subscribe(
+      (response) => {
+        this.nextSaleNumber = response.count + 1;
+      },
+      (error) => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Error',
+          detail: 'Failed to load next sale number',
+        });
+      }
+    );
+  }
+
   submitSale(): void {
     if (this.saleForm.valid) {
       const saleData: SaleWithDetails = this.saleForm.value;
@@ -79,6 +96,7 @@ export class SaleDetailsAddComponent implements OnInit {
             this.saleDetails.removeAt(0);
           }
           this.addSaleDetail(); // Ensure at least one sale detail row is present
+          this.loadNextSaleNumber(); // Update the next sale number
         },
         (error) => {
           if (error.status === 400) {
