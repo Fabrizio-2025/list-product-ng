@@ -5,12 +5,14 @@
   </div>
   <div class="w-4 flex justify-content-evenly align-items-center">
     <label for="searchSelect">Buscar por: </label>
-    <p-dropdown [options]="searchAttributes" [(ngModel)]="selectedSearchAttribute" optionLabel="label" placeholder="Select an attribute"></p-dropdown>
+    <p-dropdown [options]="searchAttributes" [(ngModel)]="selectedSearchAttribute" optionLabel="label"
+      placeholder="Select an attribute"></p-dropdown>
     <input pInputText type="text" [(ngModel)]="searchValue" (input)="filterProducts()" />
   </div>
 </div>
 
-<p-table [value]="filteredProducts" [rowsPerPageOptions]="[5, 10, 20]" [rows]="5" [paginator]="true" [tableStyle]="{ 'min-width': '60rem' }">
+<p-table [value]="filteredProducts" [rowsPerPageOptions]="[5, 10, 20]" [rows]="5" [paginator]="true"
+  [tableStyle]="{ 'min-width': '60rem' }">
   <ng-template pTemplate="header" class="flex justify-content-between">
     <tr>
       <th pSortableColumn="id" class="w-1">
@@ -23,10 +25,10 @@
       <th pSortableColumn="brand" class="w-1">
         Brand <p-sortIcon field="brand"></p-sortIcon>
       </th>
-      <th pSortableColumn="price" class="w-2">
+      <th pSortableColumn="price" class="w-1">
         Price <p-sortIcon field="price"></p-sortIcon>
       </th>
-      <th class="w-3">Image</th>
+      <th class="w-1">Image</th>
       <th class="w-2 text-center">Actions</th>
     </tr>
   </ng-template>
@@ -38,9 +40,11 @@
       <td>{{ product.brand }}</td>
       <td>{{ product.price | currency }}</td>
       <td><img [src]="product.imageUrl" alt="Product Image" width="100"></td>
-      <td class="flex justify-content-evenly">
-        <button pButton type="button" icon="pi pi-pencil" (click)="openEditDialog(product)"></button>
-        <button pButton type="button" icon="pi pi-trash" class="p-button-danger" (click)="confirmDelete(product.id!)"></button>
+      <td class="flex justify-content-evenly h-8rem ">
+        <div class="bg-white-alpha-60 flex w-10 justify-content-evenly align-items-center" >
+          <p-button icon="pi pi-pencil" (click)="openEditDialog(product)" />
+          <p-button icon="pi pi-trash" severity="danger" (click)="confirmDelete(product.id!)" />
+        </div>
       </td>
     </tr>
   </ng-template>
@@ -87,7 +91,8 @@
       </div>
     </div>
     <div class="p-dialog-footer flex justify-content-between p-2">
-      <button type="button" pButton label="Cancel" icon="pi pi-times" severity="danger" class="p-button-secondary" (click)="cancelEdit()"></button>
+      <button type="button" pButton label="Cancel" icon="pi pi-times" severity="danger" class="p-button-secondary"
+        (click)="cancelEdit()"></button>
       <button type="submit" pButton label="Save" icon="pi pi-check" [disabled]="editForm.invalid"></button>
     </div>
   </form>
@@ -114,7 +119,8 @@
       </div>
     </div>
     <div class="p-dialog-footer flex justify-content-between p-2">
-      <button type="button" pButton label="Cancel" icon="pi pi-times" severity="danger" class="p-button-secondary" (click)="cancelCreate()"></button>
+      <button type="button" pButton label="Cancel" icon="pi pi-times" severity="danger" class="p-button-secondary"
+        (click)="cancelCreate()"></button>
       <button type="submit" pButton label="Save" icon="pi pi-check" [disabled]="createForm.invalid"></button>
     </div>
   </form>

@@ -1,1 +1,6 @@
-
+td img {
+  width: auto;
+  height: 90px;
+  object-fit: cover;
+  object-position: center;
+}
