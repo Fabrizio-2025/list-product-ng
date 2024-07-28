@@ -1,3 +1,5 @@
+import { SafeUrl } from '@angular/platform-browser';
+
 export interface Product {
   id: number;
   name: string;
@@ -5,5 +7,6 @@ export interface Product {
   brand: string;
   price: number;
   totalQuantity?: number;
-  [key: string]: string | number | undefined;
+  imageUrl?: SafeUrl; // URL de la imagen sanitizada
+  [key: string]: string | number | undefined | SafeUrl; // Añadido para permitir el filtrado genérico
 }

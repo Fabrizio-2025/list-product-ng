@@ -3,7 +3,7 @@
   <div class="p-2 w-3">
     <button pButton [outlined]="true" severity="success" (click)="openCreateDialog()">Add Product</button>
   </div>
-  <div class="w-4 flex justify-content-evenly align-items-center" >
+  <div class="w-4 flex justify-content-evenly align-items-center">
     <label for="searchSelect">Buscar por: </label>
     <p-dropdown [options]="searchAttributes" [(ngModel)]="selectedSearchAttribute" optionLabel="label" placeholder="Select an attribute"></p-dropdown>
     <input pInputText type="text" [(ngModel)]="searchValue" (input)="filterProducts()" />
@@ -26,6 +26,7 @@
       <th pSortableColumn="price" class="w-2">
         Price <p-sortIcon field="price"></p-sortIcon>
       </th>
+      <th class="w-3">Image</th>
       <th class="w-2 text-center">Actions</th>
     </tr>
   </ng-template>
@@ -36,6 +37,7 @@
       <td>{{ product.description }}</td>
       <td>{{ product.brand }}</td>
       <td>{{ product.price | currency }}</td>
+      <td><img [src]="product.imageUrl" alt="Product Image" width="100"></td>
       <td class="flex justify-content-evenly">
         <button pButton type="button" icon="pi pi-pencil" (click)="openEditDialog(product)"></button>
         <button pButton type="button" icon="pi pi-trash" class="p-button-danger" (click)="confirmDelete(product.id!)"></button>

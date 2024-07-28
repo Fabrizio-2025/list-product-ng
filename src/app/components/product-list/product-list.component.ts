@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
+import { ImagenService } from '../../services/imagen.service';
 import { Product } from '../../models/product.model';
+import { ProductImage } from '../../models/product-image';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-product-list',
@@ -30,9 +33,11 @@ export class ProductListComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private imagenService: ImagenService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private sanitizer: DomSanitizer
   ) {
     this.editForm = this.fb.group({
       name: ['', Validators.required],
@@ -63,6 +68,20 @@ export class ProductListComponent implements OnInit {
     this.productService.getProducts().subscribe((data: Product[]) => {
       this.products = data;
       this.filteredProducts = data; // Initialize filteredProducts with all products
+      this.products.forEach((product) => {
+        this.loadImage(product.id);
+      });
+    });
+  }
+
+  loadImage(productId: number): void {
+    this.imagenService.getImage(productId).subscribe((imageBlob) => {
+      const objectURL = URL.createObjectURL(imageBlob);
+      const sanitizedUrl = this.sanitizer.bypassSecurityTrustUrl(objectURL);
+      const product = this.products.find((p) => p.id === productId);
+      if (product) {
+        product.imageUrl = sanitizedUrl;
+      }
     });
   }
 

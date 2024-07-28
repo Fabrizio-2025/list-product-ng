@@ -54,7 +54,7 @@ import { SaleDetailsAddComponent } from './components/sale-details-add/sale-deta
   ],
   providers: [
     ConfirmationService,
-    MessageService, // Asegúrate de que MessageService esté en los proveedores
+    MessageService, 
   ],
   bootstrap: [AppComponent],
 })
