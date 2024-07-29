@@ -20,6 +20,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { ChartModule } from 'primeng/chart';
+import { FileUploadModule } from 'primeng/fileupload';
 
 // components
 import { ProductListComponent } from './components/product-list/product-list.component';
@@ -51,10 +52,11 @@ import { SaleDetailsAddComponent } from './components/sale-details-add/sale-deta
     InputTextModule,
     DialogModule,
     ChartModule,
+    FileUploadModule,
   ],
   providers: [
     ConfirmationService,
-    MessageService, 
+    MessageService,
   ],
   bootstrap: [AppComponent],
 })

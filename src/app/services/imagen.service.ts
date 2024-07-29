@@ -17,6 +17,13 @@ export class ImagenService {
     formData.append('file', file, file.name);
     return this.http.post<ProductImage>(`${this.baseUrl}/upload`, formData);
   }
+  
+  updateImage(productId: number, file: File): Observable<ProductImage> {
+    const formData: FormData = new FormData();
+    formData.append('productId', productId.toString());
+    formData.append('file', file, file.name);
+    return this.http.put<ProductImage>(`${this.baseUrl}/update`, formData);
+  }
 
   getImage(id: number): Observable<Blob> {
     return this.http.get(`${this.baseUrl}/media/${id}`, {

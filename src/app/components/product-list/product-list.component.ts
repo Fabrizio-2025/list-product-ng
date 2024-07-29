@@ -3,7 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../../services/product.service';
 import { ImagenService } from '../../services/imagen.service';
 import { Product } from '../../models/product.model';
-import { ProductImage } from '../../models/product-image';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
@@ -21,6 +20,8 @@ export class ProductListComponent implements OnInit {
   editForm: FormGroup;
   createForm: FormGroup;
   currentProduct: Product | null = null;
+  selectedFile: File | null = null;
+  uploadedFiles: any[] = [];
   searchValue: string = '';
   selectedSearchAttribute = { label: 'ID', value: 'id' };
   searchAttributes = [
@@ -100,18 +101,53 @@ export class ProductListComponent implements OnInit {
     });
   }
 
+  onImageUpload(event: any): void {
+    for (let file of event.files) {
+      this.uploadedFiles.push(file);
+      this.selectedFile = file;
+    }
+    this.messageService.add({
+      severity: 'info',
+      summary: 'File Uploaded',
+      detail: '',
+    });
+  }
+
   updateProduct(): void {
     if (this.editForm.valid && this.currentProduct) {
       const updatedProduct = { ...this.currentProduct, ...this.editForm.value };
       this.productService.updateProduct(updatedProduct).subscribe(
         () => {
-          this.loadProducts();
-          this.editDialogVisible = false;
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Updated',
-            detail: 'Product updated successfully',
-          });
+          if (this.selectedFile && this.currentProduct) {
+            this.imagenService
+              .updateImage(this.currentProduct.id, this.selectedFile)
+              .subscribe(
+                () => {
+                  this.loadProducts();
+                  this.editDialogVisible = false;
+                  this.messageService.add({
+                    severity: 'success',
+                    summary: 'Updated',
+                    detail: 'Product updated successfully',
+                  });
+                },
+                (error) => {
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: 'Failed to upload image',
+                  });
+                }
+              );
+          } else {
+            this.loadProducts();
+            this.editDialogVisible = false;
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Updated',
+              detail: 'Product updated successfully',
+            });
+          }
         },
         (error) => {
           if (error.status === 400) {
