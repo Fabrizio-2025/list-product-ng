@@ -4,10 +4,10 @@
     <label for="date">Date</label>
     <input id="date" type="date" pInputText formControlName="date" class="w-9" />
   </div>
-  <div class="w-5 border-2 shadow-4 m-2 border-200 border-round" formArrayName="saleDetails" *ngFor="let saleDetail of saleDetails.controls; let i = index">
+  <div class="w-7 border-2 shadow-4 m-2 border-200 border-round" formArrayName="saleDetails" *ngFor="let saleDetail of saleDetails.controls; let i = index">
     <div [formGroupName]="i" class="p-field p-2 m-2 flex">
       <div class="flex w-8 justify-content-evenly align-items-center">
-        <label class="w-2" for="product">Product</label>
+        <label class="w-2" for="product">Product :</label>
         <p-dropdown id="product" [options]="products" optionLabel="name" optionValue="id" formControlName="productId" placeholder="Select a Product" styleClass="w-25rem">
           <ng-template let-product pTemplate="item">
             <div class="flex align-items-center justify-content-evenly ">
