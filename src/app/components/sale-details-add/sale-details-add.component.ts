@@ -3,8 +3,12 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { SaleService } from '../../services/sale.service';
 import { MessageService } from 'primeng/api';
 import { ProductService } from '../../services/product.service';
+import { ImagenService } from '../../services/imagen.service';
 import { Product } from '../../models/product.model';
 import { SaleWithDetails } from '../../models/sale-with-details.model';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sale-details-add',
@@ -21,7 +25,9 @@ export class SaleDetailsAddComponent implements OnInit {
     private fb: FormBuilder,
     private saleService: SaleService,
     private messageService: MessageService,
-    private productService: ProductService
+    private productService: ProductService,
+    private imagenService: ImagenService,
+    private sanitizer: DomSanitizer
   ) {
     this.saleForm = this.fb.group({
       date: ['', Validators.required],
@@ -54,7 +60,29 @@ export class SaleDetailsAddComponent implements OnInit {
   loadProducts(): void {
     this.productService.getProducts().subscribe(
       (products) => {
-        this.products = products;
+        const productObservables = products.map((product) =>
+          this.imagenService.getImage(product.id).pipe(
+            map((imageBlob) => {
+              const objectURL = URL.createObjectURL(imageBlob);
+              product.imageUrl =
+                this.sanitizer.bypassSecurityTrustUrl(objectURL);
+              return product;
+            })
+          )
+        );
+
+        forkJoin(productObservables).subscribe(
+          (productsWithImages: Product[]) => {
+            this.products = productsWithImages;
+          },
+          (error) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Failed to load product images',
+            });
+          }
+        );
       },
       (error) => {
         this.messageService.add({

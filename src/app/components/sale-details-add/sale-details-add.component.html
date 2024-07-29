@@ -1,22 +1,32 @@
 <h2 class="p-2 m-2 w-3">Add Sale With Products <span *ngIf="nextSaleNumber">(#{{ nextSaleNumber }})</span></h2>
 <form [formGroup]="saleForm" (ngSubmit)="submitSale()">
-  <div class="p-field p-2 w-3 m-2 flex align-items-center justify-content-evenly border-2 shadow-4 m-2 border-200 border-round ">
+  <div class="p-field p-2 w-3 m-2 flex align-items-center justify-content-evenly border-2 shadow-4 m-2 border-200 border-round">
     <label for="date">Date</label>
     <input id="date" type="date" pInputText formControlName="date" class="w-9" />
   </div>
-  <div class="w-5 border-2 shadow-4 m-2 border-200 border-round" formArrayName="saleDetails"
-    *ngFor="let saleDetail of saleDetails.controls; let i = index">
+  <div class="w-5 border-2 shadow-4 m-2 border-200 border-round" formArrayName="saleDetails" *ngFor="let saleDetail of saleDetails.controls; let i = index">
     <div [formGroupName]="i" class="p-field p-2 m-2 flex">
       <div class="flex w-8 justify-content-evenly align-items-center">
         <label class="w-2" for="product">Product</label>
-        <p-dropdown id="product" [options]="products" optionLabel="name" optionValue="id" formControlName="productId" placeholder="Select a Product"
-          styleClass="w-23rem" />
+        <p-dropdown id="product" [options]="products" optionLabel="name" optionValue="id" formControlName="productId" placeholder="Select a Product" styleClass="w-25rem">
+          <ng-template let-product pTemplate="item">
+            <div class="flex align-items-center justify-content-evenly ">
+              <img [src]="product.imageUrl" alt="{{product.name}}" class="w-4 h-4rem"/>
+              <span class="w-7" >{{ product.name }}</span>
+            </div>
+          </ng-template>
+          <ng-template let-selectedItem pTemplate="selectedItem">
+            <div class="flex align-items-center justify-content-evenly">
+              <img [src]="selectedItem.imageUrl" alt="{{selectedItem.name}}" class="w-2 h-3rem mr-2"/>
+              <span class="w-8" >{{ selectedItem.name }}</span>
+            </div>
+          </ng-template>
+        </p-dropdown>
       </div>
       <div class="w-4 flex align-items-center justify-content-evenly">
         <label for="quantity">Quantity</label>
         <input id="quantity" placeholder="0" type="number" class="w-5" pInputText formControlName="quantity" min="1" />
-        <button type="button" pButton icon="pi pi-minus" severity="danger" (click)="removeSaleDetail(i)"
-          *ngIf="saleDetails.length > 1"></button>
+        <button type="button" pButton icon="pi pi-minus" severity="danger" (click)="removeSaleDetail(i)" *ngIf="saleDetails.length > 1"></button>
       </div>
     </div>
   </div>
