@@ -18,6 +18,7 @@
       <th pSortableColumn="id" class="w-1">
         Id <p-sortIcon field="id"></p-sortIcon>
       </th>
+      <th class="w-1">Image</th>
       <th pSortableColumn="name" class="w-2">
         Name <p-sortIcon field="name"></p-sortIcon>
       </th>
@@ -28,18 +29,18 @@
       <th pSortableColumn="price" class="w-1">
         Price <p-sortIcon field="price"></p-sortIcon>
       </th>
-      <th class="w-1">Image</th>
+
       <th class="w-1 text-center">Actions</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-product>
     <tr>
       <td>{{ product.id }}</td>
+      <td><img [src]="product.imageUrl" alt="Product Image" width="100"></td>
       <td>{{ product.name }}</td>
       <td>{{ product.description }}</td>
       <td>{{ product.brand }}</td>
       <td>{{ product.price | currency }}</td>
-      <td><img [src]="product.imageUrl" alt="Product Image" width="100"></td>
       <td class="flex justify-content-evenly h-8rem ">
         <div class="bg-white-alpha-60 flex w-10 justify-content-evenly align-items-center" >
           <p-button icon="pi pi-pencil" (click)="openEditDialog(product)" />
